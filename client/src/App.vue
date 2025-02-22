@@ -16,7 +16,19 @@ export default {
       allCpfs: [],
       cpfsAtualizadosRecentemente: [],
       uploadEnd: false,
-      isLoading: false
+      isLoading: false,
+      paginacao: {
+        paginaAtual: 1,
+        itemsPorPagina: 10,
+        totalItems: 0
+      }
+    };
+  },
+  computed: {
+    cpfsPaginados() {
+      const start = (this.paginacao.paginaAtual - 1) * this.paginacao.itemsPorPagina;
+      const end = start + this.paginacao.itemsPorPagina;
+      return this.allCpfs.slice(start, end);
     }
   },
 
@@ -25,15 +37,19 @@ export default {
       this.isLoading = true
       try {
         const cpfsRef = ref(database, 'cpfs')
-        const snapshot = await get(cpfsRef)
-        const data= snapshot.val()
+        const query = await get(cpfsRef);
+        const data = query.val()
         this.allCpfs = data ? Object.values(data) : []
+        this.paginacao.totalItems = this.allCpfs.length;
       } catch (error) {
         console.log(error)
       } finally {
         this.isLoading = false
       }
+    },
 
+    handleTrocaPagina(pagina) {
+      this.paginacao.paginaAtual = pagina;
     },
 
     handleUploadCompleto(cpfs) {
@@ -67,7 +83,14 @@ export default {
     </div>
     <div >
       <h3>Todos os CPFs</h3>
-      <CpfCard v-if="!this.isLoading" :cpfs="allCpfs"></CpfCard>
+      <CpfCard 
+      v-if="!this.isLoading" 
+      :cpfs="cpfsPaginados"
+      :total-items="allCpfs.length"
+      :pagina-atual="paginacao.paginaAtual"
+      :items-por-pagina="paginacao.cpfPorPagina"
+      @troca-pagina="handleTrocaPagina"
+      ></CpfCard>
     </div>
   </div>
 </template>
