@@ -1,32 +1,30 @@
-import PDFParser from 'pdf2json'
+import * as pdfjsLib from 'pdfjs-dist';
 import logger from '../utils/logger.js';
 
 export const pdfParser = async (buffer) => {
     try {
-        const pdfParser = new PDFParser()
-        const result = await new Promise((resolve, reject) => {
-            pdfParser.on('pdfParser_dataReady', (pdfData) => {
-                try {
-                    const texto = pdfData.Pages.map(page => 
-                        page.Texts.map(textItem => 
-                          textItem.R.map(r => decodeURIComponent(r.T)).join('')
-                        ).join('')
-                        ).join('');
-                        const cpfs = texto.match(/\d{3}\.\d{3}\.\d{3}-\d{2}/g) || [];
-                        resolve([...new Set(cpfs)]);
-                } catch(error) {
-                    reject(error)
-                }
-            })
-            pdfParser.on('pdfParser_dataError', (error) => {
-                reject(error);
-              });
-            pdfParser.parseBuffer(buffer);
-        })
-        logger.info(`Found ${result.length} CPFs in PDF`);
-        return result;
+        const uint8Array = new Uint8Array(buffer);
+
+        const pdfParser = pdfjsLib.getDocument({ data: uint8Array });
+        const pdfDocument = await pdfParser.promise;
+        let text = '';
+    
+        for (let pageNum = 1; pageNum <= pdfDocument.numPages; pageNum++) {
+          const page = await pdfDocument.getPage(pageNum);
+          const textContent = await page.getTextContent();
+          textContent.items.forEach(item => {
+            text += item.str + ' ';
+          });
+        }
+
+        const cpfs = text.match(/\d{3}\.\d{3}\.\d{3}-\d{2}/g) || [];
+        const cpfsUnicos = [...new Set(cpfs)]; // Remove duplicates
+    
+        logger.info(`Foram encontrados ${cpfsUnicos.length} CPFs no PDF`);
+
+        return cpfsUnicos;
     } catch (error) {
-        logger.error('Error parsing PDF:', error);
+        logger.error('Erro ao ler o PDF:', error);
         throw new Error('Falha ao ler o PDF');
       }
 }

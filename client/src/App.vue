@@ -19,7 +19,7 @@ export default {
       isLoading: false,
       paginacao: {
         paginaAtual: 1,
-        itemsPorPagina: 10,
+        itemsPorPagina: 50,
         totalItems: 0
       }
     };
@@ -84,7 +84,7 @@ export default {
     <div >
       <h3>Todos os CPFs</h3>
       <CpfCardList
-      v-if="!this.isLoading" 
+      v-if="!this.isLoading"
       :cpfs="cpfsPaginados"
       :total-items="allCpfs.length"
       :pagina-atual="paginacao.paginaAtual"
@@ -105,6 +105,6 @@ export default {
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 1rem;
-}
+  }
 
 </style>

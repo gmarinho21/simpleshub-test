@@ -28,7 +28,6 @@ app.get('/api/cpfs', async (req, res) => {
 });
 
 app.post('/api/upload', upload.array('pdf', MAX_NUMBER_OF_FILES), async (req, res) => {
-  console.log(req)
   try {
     if (!req.files || req.files.length === 0) {
       return res.status(400).json({error: 'Nenhum arquivo foi enviado'})
