@@ -44,35 +44,29 @@ Crie um arquivo `.env` na pasta `server` com as seguintes variáveis de ambiente
 ```env
 NODE_ENV=development
 PORT=3000
-FIREBASE_DATABASE_URL=https://seu-projeto.firebaseio.com
-FIREBASE_PROJECT_ID=seu-projeto-id
-FIREBASE_PRIVATE_KEY_ID=seu-private-key-id
-FIREBASE_PRIVATE_KEY="-----BEGIN PRIVATE KEY-----\nSUA_CHAVE_PRIVADA\n-----END PRIVATE KEY-----\n"
-FIREBASE_CLIENT_EMAIL=seu-email@seu-projeto.iam.gserviceaccount.com
-FIREBASE_CLIENT_ID=seu-client-id
-FIREBASE_AUTH_URI=https://accounts.google.com/o/oauth2/auth
-FIREBASE_TOKEN_URI=https://oauth2.googleapis.com/token
-FIREBASE_AUTH_PROVIDER_X509_CERT_URL=https://www.googleapis.com/oauth2/v1/certs
-FIREBASE_CLIENT_X509_CERT_URL=https://www.googleapis.com/robot/v1/metadata/x509/seu-email@seu-projeto.iam.gserviceaccount.com
-FIREBASE_UNIVERSE_DOMAIN=googleapis.com
+FIREBASE_DATABASE_URL=
+FIREBASE_PROJECT_ID=
+FIREBASE_PRIVATE_KEY_ID=
+FIREBASE_PRIVATE_KEY=
+FIREBASE_CLIENT_EMAIL=
+FIREBASE_CLIENT_ID=
+FIREBASE_AUTH_URI=
+FIREBASE_TOKEN_URI=
+FIREBASE_AUTH_PROVIDER_X509_CERT_URL=
+FIREBASE_CLIENT_X509_CERT_URL=
+FIREBASE_UNIVERSE_DOMAIN=
 ```
 
 Crie um arquivo `.env` na pasta `client` com as seguintes variáveis de ambiente:
 
 ```env
-NODE_ENV=development
-PORT=3000
-FIREBASE_DATABASE_URL=https://seu-projeto.firebaseio.com
-FIREBASE_PROJECT_ID=seu-projeto-id
-FIREBASE_PRIVATE_KEY_ID=seu-private-key-id
-FIREBASE_PRIVATE_KEY="-----BEGIN PRIVATE KEY-----\nSUA_CHAVE_PRIVADA\n-----END PRIVATE KEY-----\n"
-FIREBASE_CLIENT_EMAIL=seu-email@seu-projeto.iam.gserviceaccount.com
-FIREBASE_CLIENT_ID=seu-client-id
-FIREBASE_AUTH_URI=https://accounts.google.com/o/oauth2/auth
-FIREBASE_TOKEN_URI=https://oauth2.googleapis.com/token
-FIREBASE_AUTH_PROVIDER_X509_CERT_URL=https://www.googleapis.com/oauth2/v1/certs
-FIREBASE_CLIENT_X509_CERT_URL=https://www.googleapis.com/robot/v1/metadata/x509/seu-email@seu-projeto.iam.gserviceaccount.com
-FIREBASE_UNIVERSE_DOMAIN=googleapis.com
+VITE_FIREBASE_API_KEY=
+VITE_FIREBASE_AUTH_DOMAIN=
+VITE_FIREBASE_PROJECT_ID=
+VITE_FIREBASE_STORAGE_BUCKET=
+VITE_FIREBASE_MESSAGING_SENDER_ID=
+VITE_FIREBASE_APP_ID=
+VITE_FIREBASE_DATABASE_URL=
 ```
 
 ## Executando a Aplicação
