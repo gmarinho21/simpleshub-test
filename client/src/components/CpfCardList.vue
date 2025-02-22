@@ -1,6 +1,6 @@
 <script>
 export default {
-    name: 'CpfCard',
+    name: 'CpfCardList',
     props: {
         cpfs: {
             type: Array,

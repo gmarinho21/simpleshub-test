@@ -1,13 +1,13 @@
 <script>
 import { database, ref, get, onValue } from './config/firebase';
-import CpfCard from './components/CpfCard.vue';
+import CpfCardList from './components/CpfCardList.vue';
 import PdfUploader from './components/PdfUploader.vue';
 
 
 export default {
   name: 'App',
   components: {
-    CpfCard,
+    CpfCardList,
     PdfUploader,
   },
 
@@ -79,18 +79,18 @@ export default {
   
     <div v-if="this.uploadEnd">
       <h3>CPFs Encontrados no Upload Atual</h3>
-      <CpfCard :cpfs="cpfsAtualizadosRecentemente"></CpfCard>
+      <CpfCardList :cpfs="cpfsAtualizadosRecentemente"></CpfCardList>
     </div>
     <div >
       <h3>Todos os CPFs</h3>
-      <CpfCard 
+      <CpfCardList
       v-if="!this.isLoading" 
       :cpfs="cpfsPaginados"
       :total-items="allCpfs.length"
       :pagina-atual="paginacao.paginaAtual"
       :items-por-pagina="paginacao.cpfPorPagina"
       @troca-pagina="handleTrocaPagina"
-      ></CpfCard>
+      ></CpfCardList>
     </div>
   </div>
 </template>
