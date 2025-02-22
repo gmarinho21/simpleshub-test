@@ -11,9 +11,6 @@ export const pdfParser = async (buffer) => {
                           textItem.R.map(r => decodeURIComponent(r.T)).join('')
                         ).join('')
                         ).join('');
-
-                        console.log(`texto: ${ texto }`)
-
                         const cpfs = texto.match(/\d{3}\.\d{3}\.\d{3}-\d{2}/g) || [];
                         resolve([...new Set(cpfs)]);
                 } catch(error) {
