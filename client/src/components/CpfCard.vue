@@ -18,7 +18,7 @@ export default {
       </div>
       <div class="cpf-card" v-else v-for="cpf in cpfs" :key="cpf">
         <div class="cpf">{{ cpf.value }}</div>
-        <div class="timestamp">{{ new Date(cpf.timestamp).toLocaleString('pt-BR') }}</div>
+        <div class="timestamp">{{cpf.timestamp ? new Date(cpf.timestamp).toLocaleString('pt-BR') : 'Agora' }}</div>
       </div>
     </div>
     </template>
