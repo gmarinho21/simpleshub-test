@@ -1,10 +1,13 @@
 import express from 'express'
 import multer from 'multer'
+import cors from 'cors';
 import { getAllCpfs, saveCpfs } from '../services/firebaseService.js';
 import  { pdfParser } from '../services/pdfService.js';
 
 const app = express()
 const upload = multer()
+
+app.use(cors());
 
 app.get('/api/cpfs', async (req, res) => {
   try {
