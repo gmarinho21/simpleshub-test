@@ -5,8 +5,15 @@ import { getAllCpfs, saveCpfs } from './services/firebaseService.js';
 import  { pdfParser } from './services/pdfService.js';
 import logger from './utils/logger.js';
 
+const MAX_NUMBER_OF_FILES = 5
+
 const app = express()
-const upload = multer()
+const upload = multer({
+  storage: multer.memoryStorage(),
+  limits: {
+    fileSize: 5 * 1024 * 1024, //5 MB
+    files: MAX_NUMBER_OF_FILES 
+  }})
 
 app.use(cors());
 
@@ -20,20 +27,35 @@ app.get('/api/cpfs', async (req, res) => {
   }
 });
 
-app.post('/api/upload', upload.single('pdf'), async (req, res) => {
+app.post('/api/upload', upload.array('pdf', MAX_NUMBER_OF_FILES), async (req, res) => {
+  console.log(req)
   try {
-    if (!req.file) {
+    if (!req.files || req.files.length === 0) {
       return res.status(400).json({error: 'Nenhum arquivo foi enviado'})
     }
-    logger.info(`Processando arquivo PDF: ${req.file.originalname}`);
-  
-    const pdfBuffer = req.file.buffer;
-    const cpfs = await pdfParser(pdfBuffer);
-  
-    await saveCpfs(cpfs)
-    logger.info(`${cpfs.length} CPFs salvos com sucesso`);
 
-    res.json(cpfs)
+    const allCpfs = [];
+
+    for (const file of req.files) {
+      logger.info(`Processando arquivo PDF: ${file.originalname}`)
+
+      const pdfBuffer = file.buffer;
+      const cpfs = await pdfParser(pdfBuffer)
+
+      if (cpfs.length > 0) {
+        allCpfs.push(...cpfs)
+      }
+    }
+
+    if (allCpfs.length === 0) {
+      logger.info('Nenhum CPF encontrado nos arquivos')
+      return res.json({ cpfs: [] })
+    }
+
+    await saveCpfs(allCpfs);
+    logger.info(`${allCpfs.length} CPFs salvos com sucesso`);
+
+    res.json({cpfs: allCpfs})
   } catch (error) {
     logger.error('Erro ao processar PDF:', error);
     res.status(500).json({ error: 'Erro ao processar o arquivo' });

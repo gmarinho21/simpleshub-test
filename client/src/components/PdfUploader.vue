@@ -12,30 +12,37 @@ export default {
 
   methods: {
     async handleFileSelect(e) {
-      const file = e.target.files[0]
-      this.uploadFile(file)
+      const files = Array.from(e.target.files);
+        if (files.length > 0) {
+          await this.uploadFiles(files);
+        }
     },
 
     async handleFileDrop(e) {
-      const file = e.dataTransfer.files[0]
-      this.uploadFile(file)
-
+      this.isDragging = false
+      const files = Array.from(e.dataTransfer.files).filter(file => file.type === 'application/pdf');
+        if (files.length > 0) {
+          await this.uploadFiles(files);
+        }
     },
 
-    async uploadFile(file) {
-      if (!file || file.type !== 'application/pdf') {
-        this.error = 'Por favor, selecione um arquivo PDF válido'
-        return
-      }
+    async uploadFiles(files) {
       try {
-        const formData = new FormData();
-        formData.append('pdf', file);
-        const response = await apiService.uploadPdf(formData);
-        console.log(response.data)
-        this.$emit('upload-completo', response.data)
-      } catch (error) {
-        console.log('Erro', error)
-      }
+          this.loading = true;
+          const formData = new FormData();
+
+          files.forEach(file => {
+            formData.append('pdf', file);
+          });
+  
+          const response = await apiService.uploadPdf(formData);
+          this.$emit('upload-completo', response.data.cpfs);
+        } catch (error) {
+          console.error('Upload error:', error);
+        } finally {
+          this.loading = false;
+          this.$refs.fileInput.value = '';
+        }
     }
   }
 
@@ -64,6 +71,7 @@ export default {
             accept=".pdf"
             @change="handleFileSelect"
             class="file-input"
+            multiple
           >
         </div>
       </label>

@@ -1,5 +1,5 @@
 <script>
-import { database, ref, get } from './config/firebase';
+import { database, ref, get, onValue } from './config/firebase';
 import CpfCard from './components/CpfCard.vue';
 import PdfUploader from './components/PdfUploader.vue';
 
@@ -24,8 +24,8 @@ export default {
     async fetchAllCpfs() {
       this.isLoading = true
       try {
-        const cpfsRef = ref(database, 'cpfs');
-        const snapshot = await get(cpfsRef);
+        const cpfsRef = ref(database, 'cpfs')
+        const snapshot = await get(cpfsRef)
         const data= snapshot.val()
         this.allCpfs = data ? Object.values(data) : []
       } catch (error) {
@@ -45,6 +45,12 @@ export default {
 
   created() {
     this.fetchAllCpfs()
+
+    const cpfsRef = ref(database, 'cpfs');
+    onValue(cpfsRef, (snapshot) => {
+    const data = snapshot.val();
+    this.allCpfs = data ? Object.values(data) : [];
+    })
   }
 }
 </script>
