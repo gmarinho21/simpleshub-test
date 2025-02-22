@@ -49,21 +49,32 @@ export default {
 </script>
 
 <template>
-  <PdfUploader
-  @upload-completo="handleUploadCompleto"
-  ></PdfUploader>
-
-  <div v-if="this.uploadEnd">
-    <h3>CPFs Encontrados no Upload Atual</h3>
-    <CpfCard :cpfs="cpfsAtualizadosRecentemente"></CpfCard>
-  </div>
-  <div >
-    <h3>Todos os CPFs</h3>
-    <CpfCard v-if="!this.isLoading" :cpfs="allCpfs"></CpfCard>
+  <div class="container">
+    <PdfUploader
+    @upload-completo="handleUploadCompleto"
+    ></PdfUploader>
+  
+    <div v-if="this.uploadEnd">
+      <h3>CPFs Encontrados no Upload Atual</h3>
+      <CpfCard :cpfs="cpfsAtualizadosRecentemente"></CpfCard>
+    </div>
+    <div >
+      <h3>Todos os CPFs</h3>
+      <CpfCard v-if="!this.isLoading" :cpfs="allCpfs"></CpfCard>
+    </div>
   </div>
 </template>
 
 
 <style lang="scss">
+  #app {
+    min-height: 100vh;
+  }
+
+  .container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
 
 </style>
