@@ -23,7 +23,7 @@ export default {
     </div>
     </template>
 
-<style>
+<style lang="scss">
    .cpf-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
