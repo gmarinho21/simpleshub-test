@@ -15,17 +15,25 @@ export default {
     return {
       allCpfs: [],
       cpfsAtualizadosRecentemente: [],
-      uploadEnd: false
+      uploadEnd: false,
+      isLoading: false
     }
   },
 
   methods: {
     async fetchAllCpfs() {
-      const cpfsRef = ref(database, 'cpfs');
-      const snapshot = await get(cpfsRef);
-      const data= snapshot.val()
-      this.allCpfs = data ? Object.values(data) : []
-      // console.log(this.allCpfs)
+      this.isLoading = true
+      try {
+        const cpfsRef = ref(database, 'cpfs');
+        const snapshot = await get(cpfsRef);
+        const data= snapshot.val()
+        this.allCpfs = data ? Object.values(data) : []
+      } catch (error) {
+        console.log(error)
+      } finally {
+        this.isLoading = false
+      }
+
     },
 
     handleUploadCompleto(cpfs) {
@@ -46,12 +54,13 @@ export default {
   ></PdfUploader>
 
   <div v-if="this.uploadEnd">
-    <h3 >CPFs Encontrados no Upload Atual</h3>
+    <h3>CPFs Encontrados no Upload Atual</h3>
     <CpfCard :cpfs="cpfsAtualizadosRecentemente"></CpfCard>
   </div>
-  
-  <h3 >Todos os CPFs</h3>
-  <CpfCard :cpfs="allCpfs"></CpfCard>
+  <div >
+    <h3>Todos os CPFs</h3>
+    <CpfCard v-if="!this.isLoading" :cpfs="allCpfs"></CpfCard>
+  </div>
 </template>
 
 

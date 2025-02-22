@@ -4,6 +4,11 @@ import { apiService } from '../services/api';
 
 export default {
     name: 'PdfUploader',
+    data() {
+      return {
+        isDragging: false,
+      }
+    },
 
   methods: {
     async handleFileSelect(e) {
@@ -39,16 +44,19 @@ export default {
 
 <template>
     <div class="pdf-uploader">
+      <label for="fileInput">
       <div 
         class="upload-area"
+        :class="{ 'is-dragging': isDragging }"
         @drag.prevent
         @dragstart.prevent
         @dragend.prevent
         @dragover.prevent
+        @dragenter.prevent="isDragging = true"
+        @dragleave.prevent="isDragging = false"
         @drop.prevent="handleFileDrop"
       >
-        <label for="fileInput">
-          <p>Arraste seu arquivo PDF ou clique para selecionar</p>
+          <p >Arraste seu arquivo PDF ou clique para selecionar</p>
           <input
             type="file"
             id="fileInput"
@@ -57,14 +65,15 @@ export default {
             @change="handleFileSelect"
             class="file-input"
           >
-        </label>
-      </div>
+        </div>
+      </label>
     </div>
 </template>
 
 <style lang="scss">
 .pdf-uploader {
     margin: 20px 0;
+
   
     .upload-area {
       border: 2px dashed #ccc;
@@ -73,6 +82,11 @@ export default {
       text-align: center;
       cursor: pointer;
       transition: all 0.3s ease;
+
+      &:hover, &.is-dragging {
+      background-color: #c5c5c5;
+    }
+  
       
       label {
         cursor: pointer;
@@ -87,18 +101,6 @@ export default {
         display: none;
       }
     }
-  
-    .upload-progress {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 10px;
-    }
-  
-    .error-message {
-      color: #dc3545;
-      margin-top: 10px;
-      text-align: center;
-    }
+
   }
 </style>
