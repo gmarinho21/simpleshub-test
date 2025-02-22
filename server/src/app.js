@@ -1,6 +1,6 @@
 import express from 'express'
 import multer from 'multer'
-import { getAllCpfs } from '../services/firebaseService.js';
+import { getAllCpfs, saveCpfs } from '../services/firebaseService.js';
 import  { pdfParser } from '../services/pdfService.js';
 
 const app = express()
@@ -19,7 +19,10 @@ app.get('/api/cpfs', async (req, res) => {
 app.post('/api/upload', upload.single('pdf'), async (req, res) => {
   const pdfBuffer = req.file.buffer;
   const cpfs = await pdfParser(pdfBuffer);
-  res.send('pdf subiu sem erros')
+
+  await saveCpfs(cpfs)
+
+  res.json(cpfs)
 })
 
 const PORT = process.env.PORT || 3000;

@@ -40,3 +40,16 @@ export const getAllCpfs = async () => {
         throw error;
     }
 };
+
+export const saveCpfs = async (cpfs) => {
+    const updates = {}
+    cpfs.forEach(cpf => {
+        updates[cpf.replace(/\./g, '_').replace(/-/g, '_')] = {
+            value: cpf,
+            timestamp: admin.database.ServerValue.TIMESTAMP
+        }
+    })
+
+    await cpfsRef.update(updates)
+    console.log(`${cpfs.length} CPFs salvos no Firebase`)
+}
