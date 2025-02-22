@@ -1,8 +1,12 @@
 <script>
 import { database, ref, get } from './config/firebase';
+import CpfCard from './components/CpfCard.vue';
 
 export default {
   name: 'App',
+  components: {
+    CpfCard
+  },
 
   data() {
     return {
@@ -27,5 +31,8 @@ export default {
 </script>
 
 <template>
-  <h1>HelloWorld</h1>
+  <CpfCard :cpfs="allCpfs"></CpfCard>
 </template>
+
+
+
