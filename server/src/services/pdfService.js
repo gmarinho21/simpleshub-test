@@ -27,7 +27,7 @@ export const pdfParser = async (buffer) => {
 
         return result;
     } catch (error) {
-        console.log('Falha ao ler o PDF:', error);
+        logger.error('Error parsing PDF:', error);
         throw new Error('Falha ao ler o PDF');
       }
 }

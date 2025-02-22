@@ -4,9 +4,6 @@ import dotenv from 'dotenv';
 // Inicialização do Firebase Admin
 dotenv.config();
 
-console.log("URL", process.env.FIREBASE_DATABASE_URL);
-console.log("PROJECT_ID", process.env.FIREBASE_PROJECT_ID);
-
 admin.initializeApp({
   credential: admin.credential.cert({
     "type": "service_account",
@@ -36,7 +33,7 @@ export const getAllCpfs = async () => {
             timestamp: item.timestamp
         }));
     } catch (error) {
-        console.log('Erro ao buscar CPFs do Firebase:', error);
+        logger.error('Erro ao salvar CPFs no Firebase:', error);
         throw error;
     }
 };
@@ -51,5 +48,6 @@ export const saveCpfs = async (cpfs) => {
     })
 
     await cpfsRef.update(updates)
-    console.log(`${cpfs.length} CPFs salvos no Firebase`)
+    logger.info(`${cpfs.length} CPFs salvos no Firebase`);
+
 }
