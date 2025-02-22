@@ -13,7 +13,9 @@ export default {
 
   data() {
     return {
-      allCpfs: []
+      allCpfs: [],
+      cpfsAtualizadosRecentemente: [],
+      uploadEnd: false
     }
   },
 
@@ -23,8 +25,13 @@ export default {
       const snapshot = await get(cpfsRef);
       const data= snapshot.val()
       this.allCpfs = data ? Object.values(data) : []
-      console.log(this.allCpfs)
+      // console.log(this.allCpfs)
     },
+
+    handleUploadCompleto(cpfs) {
+      this.uploadEnd = true
+      this.cpfsAtualizadosRecentemente = cpfs.map(value => ({ value }));
+    }
   },
 
   created() {
@@ -34,7 +41,16 @@ export default {
 </script>
 
 <template>
-  <PdfUploader></PdfUploader>
+  <PdfUploader
+  @upload-completo="handleUploadCompleto"
+  ></PdfUploader>
+
+  <div v-if="this.uploadEnd">
+    <h3 >CPFs Encontrados no Upload Atual</h3>
+    <CpfCard :cpfs="cpfsAtualizadosRecentemente"></CpfCard>
+  </div>
+  
+  <h3 >Todos os CPFs</h3>
   <CpfCard :cpfs="allCpfs"></CpfCard>
 </template>
 

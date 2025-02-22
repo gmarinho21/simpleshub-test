@@ -8,18 +8,13 @@ export default {
   methods: {
     async handleFileSelect(e) {
       const file = e.target.files[0]
-      const formData = new FormData();
-      formData.append('pdf', file);
-
-      const response = await apiService.uploadPdf(formData);
+      this.uploadFile(file)
     },
 
     async handleFileDrop(e) {
       const file = e.dataTransfer.files[0]
-      const formData = new FormData();
-      formData.append('pdf', file);
+      this.uploadFile(file)
 
-      const response = await apiService.uploadPdf(formData);
     },
 
     async uploadFile(file) {
@@ -28,7 +23,11 @@ export default {
         return
       }
       try {
+        const formData = new FormData();
+        formData.append('pdf', file);
         const response = await apiService.uploadPdf(formData);
+        console.log(response.data)
+        this.$emit('upload-completo', response.data)
       } catch (error) {
         console.log('Erro', error)
       }
