@@ -1,4 +1,5 @@
 import PDFParser from 'pdf2json'
+import logger from '../utils/logger.js';
 
 export const pdfParser = async (buffer) => {
     try {
@@ -17,14 +18,12 @@ export const pdfParser = async (buffer) => {
                     reject(error)
                 }
             })
-
             pdfParser.on('pdfParser_dataError', (error) => {
                 reject(error);
               });
-
             pdfParser.parseBuffer(buffer);
         })
-
+        logger.info(`Found ${result.length} CPFs in PDF`);
         return result;
     } catch (error) {
         logger.error('Error parsing PDF:', error);

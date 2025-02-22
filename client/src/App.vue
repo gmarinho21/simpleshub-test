@@ -39,6 +39,7 @@ export default {
     handleUploadCompleto(cpfs) {
       this.uploadEnd = true
       this.cpfsAtualizadosRecentemente = cpfs.map(value => ({ value }));
+      this.fetchAllCpfs()
     }
   },
 

@@ -1,4 +1,5 @@
 import admin from 'firebase-admin';
+import logger from '../utils/logger.js';
 import dotenv from 'dotenv';
 
 // Inicialização do Firebase Admin
@@ -39,15 +40,18 @@ export const getAllCpfs = async () => {
 };
 
 export const saveCpfs = async (cpfs) => {
-    const updates = {}
-    cpfs.forEach(cpf => {
-        updates[cpf.replace(/\./g, '_').replace(/-/g, '_')] = {
-            value: cpf,
-            timestamp: admin.database.ServerValue.TIMESTAMP
-        }
-    })
-
-    await cpfsRef.update(updates)
-    logger.info(`${cpfs.length} CPFs salvos no Firebase`);
-
+    try {
+        const updates = {}
+        cpfs.forEach(cpf => {
+            updates[cpf.replace(/\./g, '_').replace(/-/g, '_')] = {
+                value: cpf,
+                timestamp: admin.database.ServerValue.TIMESTAMP
+            }
+        })
+        await cpfsRef.update(updates)
+        logger.info(`${cpfs.length} CPFs salvos no Firebase`);
+    } catch (error) {
+        logger.error('Erro ao salvar CPFs no Firebase:', error);
+        throw error;
+    }
 }

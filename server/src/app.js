@@ -21,15 +21,24 @@ app.get('/api/cpfs', async (req, res) => {
 });
 
 app.post('/api/upload', upload.single('pdf'), async (req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({error: 'Nenhum arquivo foi enviado'})
+    }
+    logger.info(`Processando arquivo PDF: ${req.file.originalname}`);
+  
+    const pdfBuffer = req.file.buffer;
+    const cpfs = await pdfParser(pdfBuffer);
+  
+    await saveCpfs(cpfs)
+    logger.info(`${cpfs.length} CPFs salvos com sucesso`);
 
-  logger.info(`Processando arquivo PDF: ${req.file.originalname}`);
+    res.json(cpfs)
+  } catch (error) {
+    logger.error('Erro ao processar PDF:', error);
+    res.status(500).json({ error: 'Erro ao processar o arquivo' });
+  }
 
-  const pdfBuffer = req.file.buffer;
-  const cpfs = await pdfParser(pdfBuffer);
-
-  await saveCpfs(cpfs)
-
-  res.json(cpfs)
 })
 
 const PORT = process.env.PORT || 3000;
