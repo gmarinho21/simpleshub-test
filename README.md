@@ -1,6 +1,9 @@
 # SimplesHub Test
 
-SimplesHub Test é uma aplicação de exemplo que permite o upload de arquivos PDF, a extração de CPFs desses arquivos e a exibição dos CPFs extraídos. A aplicação é composta por um servidor backend em Node.js e um frontend em Vue.js.
+SimplesHub Test é uma aplicação para o teste técnico da SimplesHub. A aplicação permite o upload de arquivos PDF, a extração de CPFs desses arquivos e a exibição dos CPFs extraídos. A aplicação é composta por um servidor backend em Node.js e um frontend em Vue.js.
+
+Live link:
+https://tech.test.gabrielm.com.br
 
 ## Funcionalidades
 
@@ -11,7 +14,7 @@ SimplesHub Test é uma aplicação de exemplo que permite o upload de arquivos P
 
 ## Requisitos
 
-- Node.js (versão 18 ou superior)
+- Node.js (versão 22 ou superior)
 - npm (gerenciador de pacotes do Node.js)
 
 ## Instalação
@@ -88,7 +91,15 @@ VITE_FIREBASE_DATABASE_URL=
 3. Acesse a aplicação no navegador:
 
    ```
-   http://localhost:5173
+   http://localhost
+   ```
+
+Ou com o Docker Compose
+
+1. Docker-compose
+   
+   ```
+   docker-compose up
    ```
 
 ## Estrutura do Projeto
