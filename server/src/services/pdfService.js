@@ -13,10 +13,9 @@ export const pdfParser = async (buffer) => {
           const page = await pdfDocument.getPage(pageNum);
           const textContent = await page.getTextContent();
           textContent.items.forEach(item => {
-            text += item.str + ' ';
+            text += item.str + '';
           });
         }
-
         const cpfs = text.match(/\d{3}\.\d{3}\.\d{3}-\d{2}/g) || [];
         const cpfsUnicos = [...new Set(cpfs)]; // Remove duplicates
     
