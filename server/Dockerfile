@@ -2,6 +2,7 @@
 FROM node:22-alpine
 
 # Define os args para usar no build
+
 ARG FIREBASE_AUTH_PROVIDER_X509_CERT_URL
 ARG FIREBASE_AUTH_URI
 ARG FIREBASE_CLIENT_EMAIL
@@ -14,6 +15,8 @@ ARG FIREBASE_PROJECT_ID
 ARG FIREBASE_TOKEN_URI
 ARG FIREBASE_UNIVERSE_DOMAIN
 ARG PORT=3000
+
+RUN echo $FIREBASE_CLIENT_EMAIL
 
 # Define as variáveis de ambiente com valores padrão seguros
 ENV NODE_ENV=production
